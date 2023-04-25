@@ -7,35 +7,34 @@ pipeline {
     stages{
         stage('Build Maven'){
             steps{
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/sureshrajuvetukuri/devops-automation.git']]])
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/swati0806/SpringBootCI-CD.git']])
                 sh 'mvn clean install'
             }
         }
-        stage('Build docker image'){
+     stage('Build docker image'){
             steps{
                 script{
-                    sh 'docker build -t suresh394/kubernetes .'
+                    sh 'docker build -t swatinamdev/cicdkube .'
                 }
             }
         }
-        stage('Push image to hub'){
+     stage('Push image to hub'){
             steps{
                 script{
-                    withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
-                    sh 'docker login -u suresh394 -p ${dockerhubpwd}'
+                    withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')])  {
+                    sh 'docker login -u swatinamdev -p ${dockerhubpwd}'
                         
                     }
-                    sh 'docker push suresh394/kubernetes'
+                    sh 'docker push swatinamdev/cicdkube'
                 }
             }
         }
-        stage('Deploy to K8s'){
+    stage('Deploy to K8s'){
             steps{
                 script{
                     kubernetesDeploy (configs: 'deploymentservice.yaml',kubeconfigId: 'kubeconfig')
                 }
             }
         }
-    
-    }    
+    }
 }
