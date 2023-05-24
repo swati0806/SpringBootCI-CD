@@ -11,7 +11,7 @@ public class DevopsIntegrationApplication {
 
 	@GetMapping
 	public String message(){
-		return "Hi Friends Latest Devops Projects Uploaded Daily Based . LiKe & Share this video & also Subscribe";
+		return "Hi, this project  is automation using maven, kubernetes cluster, jenkins and docker";
 	}
 
 	public static void main(String[] args) {
